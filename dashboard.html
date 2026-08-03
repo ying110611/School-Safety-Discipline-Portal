@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMK Gajah Berang - Student Dashboard</title>
+    <title>Submit Report | SMK Gajah Berang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; }
+        .input-focus { transition: all 0.2s ease; }
+        .input-focus:focus { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800 flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen">
 
     <!-- Navigation Bar -->
     <nav class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
@@ -26,65 +32,106 @@
         </div>
     </nav>
 
-    <!-- Main Content: Student Dashboard -->
-    <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
-        <div class="grid md:grid-cols-3 gap-8">
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-10 w-full">
+        <div class="grid lg:grid-cols-12 gap-8">
             
-            <!-- Left Column: Submit Report Form -->
-            <div class="md:col-span-1 bg-white p-6 rounded-2xl shadow-md border border-slate-200 h-fit">
-                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-pen-to-square text-indigo-600"></i> Submit New Report
-                </h2>
-
-                <form onsubmit="submitReport(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold mb-1 text-slate-700">Incident Category</label>
-                        <select id="category" required class="w-full p-2.5 border rounded-lg text-sm bg-slate-50 border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="">Select Category</option>
-                            <option value="Bullying">Bullying (Physical / Verbal)</option>
-                            <option value="Vandalism">Vandalism</option>
-                            <option value="Cyberbullying">Cyberbullying</option>
-                            <option value="Other">Other Violation</option>
-                        </select>
+            <!-- Left Column: New Incident Report Form (From design) -->
+            <div class="lg:col-span-7">
+                <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100">
+                    <div class="bg-indigo-900 p-8 text-white">
+                        <h1 class="text-2xl md:text-3xl font-bold">New Incident Report</h1>
+                        <p class="opacity-80 mt-2 text-sm">Please fill in the details accurately. Your report helps keep our school safe.</p>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold mb-1 text-slate-700">Location</label>
-                        <input type="text" id="location" placeholder="e.g. Block B 2nd Floor Corridor" required class="w-full p-2.5 border rounded-lg text-sm bg-slate-50 border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
+                    <form id="bullyForm" onsubmit="submitReport(event)" class="p-8 space-y-6">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-2">Aggressor Name(s)</label>
+                                <input type="text" id="aggressorName" placeholder="Who was involved?" required 
+                                       class="input-focus w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-indigo-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 mb-2">Incident Date</label>
+                                <input type="date" id="incidentDate" required 
+                                       class="input-focus w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-indigo-500 text-sm text-gray-600">
+                            </div>
+                        </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold mb-1 text-slate-700">Description Details</label>
-                        <textarea id="description" rows="4" placeholder="Describe what happened clearly..." required class="w-full p-2.5 border rounded-lg text-sm bg-slate-50 border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-2">Incident Category</label>
+                            <select id="category" required class="input-focus w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-indigo-500 text-sm text-gray-700">
+                                <option value="">Select Category</option>
+                                <option value="Bullying">Bullying (Physical / Verbal)</option>
+                                <option value="Vandalism">Vandalism</option>
+                                <option value="Cyberbullying">Cyberbullying</option>
+                                <option value="Other">Other Violation</option>
+                            </select>
+                        </div>
 
-                    <button type="submit" class="w-full bg-indigo-900 hover:bg-indigo-800 text-white font-semibold py-2.5 rounded-lg text-sm shadow transition">
-                        Submit Report
-                    </button>
-                </form>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-3">Severity Level</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="severity" value="Mild" class="peer hidden" checked>
+                                    <div class="text-center py-2.5 border-2 border-gray-100 rounded-xl peer-checked:border-green-500 peer-checked:bg-green-50 transition font-semibold text-xs text-gray-500 peer-checked:text-green-600">
+                                        Mild
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="severity" value="Moderate" class="peer hidden">
+                                    <div class="text-center py-2.5 border-2 border-gray-100 rounded-xl peer-checked:border-amber-500 peer-checked:bg-amber-50 transition font-semibold text-xs text-gray-500 peer-checked:text-amber-600">
+                                        Moderate
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="severity" value="Severe" class="peer hidden">
+                                    <div class="text-center py-2.5 border-2 border-gray-100 rounded-xl peer-checked:border-red-500 peer-checked:bg-red-50 transition font-semibold text-xs text-gray-500 peer-checked:text-red-600">
+                                        Severe
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-2">Detailed Description</label>
+                            <textarea id="description" rows="4" placeholder="Tell us exactly what happened..." required 
+                                      class="input-focus w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-indigo-500 text-sm"></textarea>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full bg-indigo-900 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-200 hover:bg-indigo-800 transition-all active:scale-[0.98] text-sm">
+                                Submit Official Report
+                            </button>
+                            <p class="text-center text-xs text-gray-400 mt-3 italic">This report will be sent to the Discipline Board for review.</p>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <!-- Right Column: Report History Table -->
-            <div class="md:col-span-2 bg-white p-6 rounded-2xl shadow-md border border-slate-200">
-                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-indigo-600"></i> My Submitted Reports
-                </h2>
+            <div class="lg:col-span-5">
+                <div class="bg-white p-6 rounded-[2.5rem] shadow-xl shadow-slate-200/60 border border-slate-100 h-full">
+                    <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-indigo-600"></i> My Submitted Reports
+                    </h2>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-200 text-xs text-slate-500 uppercase bg-slate-50">
-                                <th class="p-3">ID</th>
-                                <th class="p-3">Category</th>
-                                <th class="p-3">Location</th>
-                                <th class="p-3">Date</th>
-                                <th class="p-3">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="report-list" class="text-xs divide-y divide-slate-100">
-                            <!-- Dynamically generated rows -->
-                        </tbody>
-                    </table>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-[11px] text-slate-500 uppercase bg-slate-50">
+                                    <th class="p-2.5">ID</th>
+                                    <th class="p-2.5">Category</th>
+                                    <th class="p-2.5">Severity</th>
+                                    <th class="p-2.5">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="report-list" class="text-xs divide-y divide-slate-100">
+                                <!-- Dynamically generated rows -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -92,7 +139,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
         <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
             <p class="font-semibold text-slate-300">SMK Gajah Berang - Discipline & Safety Board</p>
             <p>&copy; 2026 All Rights Reserved.</p>
@@ -101,14 +148,15 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // 初始化读取用户信息
         const currentUser = localStorage.getItem('currentUser') || 'Student';
         document.getElementById('user-display').innerText = `Welcome, ${currentUser}`;
 
-        // 默认样本数据
+        // 设置默认日期为今天
+        document.getElementById('incidentDate').valueAsDate = new Date();
+
         let reports = JSON.parse(localStorage.getItem('userReports')) || [
-            { id: 'REP-101', category: 'Bullying', location: 'Canteen Area', date: '2026-08-01', status: 'Pending' },
-            { id: 'REP-102', category: 'Vandalism', location: 'Toilet Block A', date: '2026-08-02', status: 'Under Investigation' }
+            { id: 'REP-101', category: 'Bullying', aggressor: 'Unknown', severity: 'Moderate', date: '2026-08-01', status: 'Pending' },
+            { id: 'REP-102', category: 'Vandalism', aggressor: 'Form 4 Student', severity: 'Mild', date: '2026-08-02', status: 'Under Investigation' }
         ];
 
         function renderReports() {
@@ -116,7 +164,7 @@
             tbody.innerHTML = '';
 
             if (reports.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No reports submitted yet.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">No reports submitted yet.</td></tr>`;
                 return;
             }
 
@@ -125,14 +173,17 @@
                 if (rep.status === 'Resolved') badgeClass = 'bg-emerald-100 text-emerald-800';
                 if (rep.status === 'Under Investigation') badgeClass = 'bg-blue-100 text-blue-800';
 
+                let sevClass = 'text-green-600 bg-green-50';
+                if (rep.severity === 'Moderate') sevClass = 'text-amber-600 bg-amber-50';
+                if (rep.severity === 'Severe') sevClass = 'text-red-600 bg-red-50';
+
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50";
                 tr.innerHTML = `
-                    <td class="p-3 font-semibold text-slate-700">${rep.id}</td>
-                    <td class="p-3">${rep.category}</td>
-                    <td class="p-3">${rep.location}</td>
-                    <td class="p-3 text-slate-400">${rep.date}</td>
-                    <td class="p-3"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${badgeClass}">${rep.status}</span></td>
+                    <td class="p-2.5 font-semibold text-slate-700">${rep.id}</td>
+                    <td class="p-2.5">${rep.category}</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded-md font-semibold text-[10px] ${sevClass}">${rep.severity}</span></td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeClass}">${rep.status}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -140,22 +191,28 @@
 
         function submitReport(e) {
             e.preventDefault();
+            const aggressor = document.getElementById('aggressorName').value;
+            const incidentDate = document.getElementById('incidentDate').value;
             const category = document.getElementById('category').value;
-            const location = document.getElementById('location').value;
+            const severity = document.querySelector('input[name="severity"]:checked').value;
+            const description = document.getElementById('description').value;
+
             const newId = 'REP-' + Math.floor(100 + Math.random() * 900);
-            const today = new Date().toISOString().split('T')[0];
 
             reports.unshift({
                 id: newId,
                 category: category,
-                location: location,
-                date: today,
+                aggressor: aggressor,
+                severity: severity,
+                description: description,
+                date: incidentDate,
                 status: 'Pending'
             });
 
             localStorage.setItem('userReports', JSON.stringify(reports));
             renderReports();
-            e.target.reset();
+            document.getElementById('bullyForm').reset();
+            document.getElementById('incidentDate').valueAsDate = new Date();
             alert('Report submitted successfully!');
         }
 
