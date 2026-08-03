@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMK Gajah Berang - Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="logo.png" alt="SMK Gajah Berang Logo" class="h-10 w-auto object-contain bg-white rounded p-0.5" onerror="this.src='https://via.placeholder.com/40?text=Logo'">
+                <div>
+                    <span class="font-bold text-lg tracking-wide block leading-tight">SMK GAJAH BERANG</span>
+                    <span class="text-[10px] text-amber-300 font-medium tracking-wider uppercase">Safety & Discipline Portal</span>
+                </div>
+            </a>
+            <div class="space-x-2">
+                <a href="index.html" class="px-3 py-1.5 hover:bg-indigo-800 rounded text-sm text-indigo-100">Home</a>
+                <a href="login.html" class="px-3 py-1.5 hover:bg-indigo-800 rounded text-sm text-indigo-100">Login</a>
+                <a href="signup.html" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-semibold px-4 py-1.5 rounded text-sm transition">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content: Sign Up Form -->
+    <main class="flex-grow flex items-center justify-center py-12 px-4">
+        <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-md border border-slate-200">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Create an Account</h2>
+                <p class="text-xs text-slate-500 mt-1">Join the safety portal to submit and track reports</p>
+            </div>
+
+            <form onsubmit="handleSignup(event)">
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">Full Name</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="signup-name" placeholder="e.g. Tan Ah Kow" required class="w-full pl-9 pr-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50 border-slate-300">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">Email Address</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">
+                            <i class="fa-solid fa-envelope"></i>
+                        </span>
+                        <input type="email" placeholder="student@gajahberang.edu.my" required class="w-full pl-9 pr-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50 border-slate-300">
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" required placeholder="••••••••" class="w-full pl-9 pr-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50 border-slate-300">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-900 text-white py-2.5 rounded-lg font-semibold hover:bg-indigo-800 transition text-sm shadow-md mb-4">
+                    Sign Up
+                </button>
+
+                <p class="text-xs text-center text-slate-500">
+                    Already have an account? 
+                    <a href="login.html" class="text-indigo-600 font-semibold hover:underline">Login</a>
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="font-semibold text-slate-300">SMK Gajah Berang - Discipline & Safety Board</p>
+            <p>&copy; 2026 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value || "Student";
+            
+            // 保存注册的姓名至 LocalStorage
+            localStorage.setItem('currentUser', name);
+            
+            // 跳转到 Dashboard 页面
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
