@@ -3,91 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMK Gajah Berang - Login</title>
+    <title>Login | SMK Gajah Berang Safety Portal</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        /* 毛玻璃卡片样式 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        /* 输入框聚焦微效果 */
+        .input-focus {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(49, 46, 129, 0.1);
+        }
+        /* 悬停微动画 */
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -5px rgba(49, 46, 129, 0.2);
+        }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800 flex flex-col min-h-screen">
+<body class="bg-gradient-to-br from-slate-50 via-indigo-50/40 to-slate-100 min-h-screen flex flex-col justify-between text-slate-800">
 
-    <!-- Navigation Bar -->
-    <nav class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
-                <img src="logo.png" alt="SMK Gajah Berang Logo" class="h-10 w-auto object-contain bg-white rounded p-0.5" onerror="this.src='https://via.placeholder.com/40?text=Logo'">
+    <!-- Header / Navigation -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-indigo-100/50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-3.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <img src="logo.png" alt="SMK Gajah Berang Logo" class="h-11 w-auto object-contain bg-white rounded-xl p-1 shadow-sm border border-slate-100 group-hover:scale-105 transition-transform" onerror="this.src='https://via.placeholder.com/45?text=SMKGB'">
                 <div>
-                    <span class="font-bold text-lg tracking-wide block leading-tight">SMK GAJAH BERANG</span>
-                    <span class="text-[10px] text-amber-300 font-medium tracking-wider uppercase">Safety & Discipline Portal</span>
+                    <span class="font-black text-xl tracking-tight text-indigo-950 block leading-tight">SMK GAJAH BERANG</span>
+                    <span class="text-[11px] text-indigo-600 font-bold tracking-wider uppercase">Safety & Discipline Portal</span>
                 </div>
             </a>
-            <div class="space-x-2">
-                <a href="index.html" class="px-3 py-1.5 hover:bg-indigo-800 rounded text-sm text-indigo-100">Home</a>
-                <a href="login.html" class="px-3 py-1.5 bg-indigo-800 rounded text-sm font-semibold text-white">Login</a>
-                <a href="signup.html" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-semibold px-4 py-1.5 rounded text-sm transition">Sign Up</a>
-            </div>
+            <a href="index.html" class="text-xs font-bold text-slate-600 hover:text-indigo-900 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </a>
         </div>
     </nav>
 
-    <!-- Main Content: Login Form -->
-    <main class="flex-grow flex items-center justify-center py-12 px-4">
-        <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-md border border-slate-200">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-slate-800">Account Login</h2>
-                <p class="text-xs text-slate-500 mt-1">Sign in to access the safety & report portal</p>
+    <!-- Main Container -->
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+            
+            <!-- Glassmorphism Login Card -->
+            <div class="glass-card rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-indigo-900/10 border border-white">
+                
+                <!-- Card Header -->
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-indigo-900 text-amber-300 rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-lg shadow-indigo-900/30 mb-4">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Welcome Back</h1>
+                    <p class="text-slate-500 text-xs mt-1.5">Sign in to access your portal account</p>
+                </div>
+
+                <!-- Role Selector Tabs -->
+                <div class="bg-slate-100/80 p-1.5 rounded-2xl flex mb-6 border border-slate-200/60">
+                    <button type="button" id="tab-student" onclick="switchRole('student')" class="w-1/2 py-2.5 rounded-xl text-xs font-extrabold transition-all shadow-sm bg-white text-indigo-950">
+                        <i class="fa-solid fa-user-graduate mr-1.5"></i> Student
+                    </button>
+                    <button type="button" id="tab-admin" onclick="switchRole('admin')" class="w-1/2 py-2.5 rounded-xl text-xs font-extrabold transition-all text-slate-500 hover:text-slate-800">
+                        <i class="fa-solid fa-user-shield mr-1.5"></i> Admin / Teacher
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
+                    
+                    <div>
+                        <label id="usernameLabel" class="block text-xs font-bold text-slate-700 mb-2">Student ID / Email</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 text-xs">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input type="text" id="username" placeholder="e.g. STU1001" required 
+                                   class="input-focus w-full pl-11 pr-4 py-3.5 bg-slate-50/80 border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 outline-none focus:border-indigo-600 focus:bg-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-2">Password</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 text-xs">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" id="password" placeholder="••••••••" required 
+                                   class="input-focus w-full pl-11 pr-4 py-3.5 bg-slate-50/80 border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 outline-none focus:border-indigo-600 focus:bg-white">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center text-xs">
+                        <label class="flex items-center text-slate-600 font-medium cursor-pointer">
+                            <input type="checkbox" class="rounded border-slate-300 text-indigo-900 focus:ring-indigo-500 mr-2">
+                            Remember me
+                        </label>
+                        <a href="#" class="text-indigo-600 font-bold hover:underline">Forgot?</a>
+                    </div>
+
+                    <button type="submit" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-900/20 hover-lift text-xs transition-all mt-2">
+                        Sign In to Dashboard
+                    </button>
+                </form>
+
+                <!-- Signup Link -->
+                <div class="mt-8 pt-6 border-t border-slate-200/60 text-center">
+                    <p class="text-xs text-slate-500 font-medium">
+                        Don't have a student account? 
+                        <a href="signup.html" class="text-indigo-600 font-extrabold hover:underline ml-1">Create Account</a>
+                    </p>
+                </div>
+
             </div>
-
-            <form onsubmit="handleLogin(event)">
-                <div class="mb-4">
-                    <label class="block text-xs font-semibold mb-1 text-slate-700">Email Address</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">
-                            <i class="fa-solid fa-envelope"></i>
-                        </span>
-                        <input type="email" id="login-email" placeholder="student@gajahberang.edu.my" required class="w-full pl-9 pr-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50 border-slate-300">
-                    </div>
-                </div>
-
-                <div class="mb-6">
-                    <label class="block text-xs font-semibold mb-1 text-slate-700">Password</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">
-                            <i class="fa-solid fa-lock"></i>
-                        </span>
-                        <input type="password" required placeholder="••••••••" class="w-full pl-9 pr-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50 border-slate-300">
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full bg-indigo-900 text-white py-2.5 rounded-lg font-semibold hover:bg-indigo-800 transition text-sm shadow-md mb-4">
-                    Login
-                </button>
-
-                <p class="text-xs text-center text-slate-500">
-                    Don't have an account? 
-                    <a href="signup.html" class="text-indigo-600 font-semibold hover:underline">Sign Up</a>
-                </p>
-            </form>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-            <p class="font-semibold text-slate-300">SMK Gajah Berang - Discipline & Safety Board</p>
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 text-center space-y-2">
+            <p class="font-bold text-slate-300">SMK Gajah Berang &bull; Safety & Discipline Board</p>
             <p>&copy; 2026 All Rights Reserved.</p>
         </div>
     </footer>
 
     <!-- JavaScript Logic -->
     <script>
+        let currentRole = 'student';
+
+        // 自动检测 URL 参数 (?role=admin) 自动切换 Tab
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('role') === 'admin') {
+            switchRole('admin');
+        }
+
+        function switchRole(role) {
+            currentRole = role;
+            const studentBtn = document.getElementById('tab-student');
+            const adminBtn = document.getElementById('tab-admin');
+            const usernameLabel = document.getElementById('usernameLabel');
+            const usernameInput = document.getElementById('username');
+
+            if (role === 'admin') {
+                adminBtn.className = "w-1/2 py-2.5 rounded-xl text-xs font-extrabold transition-all shadow-sm bg-indigo-900 text-white";
+                studentBtn.className = "w-1/2 py-2.5 rounded-xl text-xs font-extrabold transition-all text-slate-500 hover:text-slate-800";
+                usernameLabel.innerText = "Teacher ID / Official Email";
+                usernameInput.placeholder = "e.g. ADM2026 or teacher@smkgb.edu.my";
+            } else {
+                studentBtn.className = "w-1/2 py-2.5 rounded-xl text-xs font-extrabold transition-all shadow-sm bg-white text-indigo-950";
+                adminBtn.className = "w-1/2 py-2.5 rounded-xl text-xs font-extrabold transition-all text-slate-500 hover:text-slate-800";
+                usernameLabel.innerText = "Student ID / Email";
+                usernameInput.placeholder = "e.g. STU1001";
+            }
+        }
+
         function handleLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const username = email.split('@')[0] || "Student";
+            const username = document.getElementById('username').value;
             
-            // 保存当前登录用户名至 LocalStorage
+            // 存储当前登录的用户与角色
             localStorage.setItem('currentUser', username);
-            
-            // 跳转到 Dashboard 页面
-            window.location.href = 'dashboard.html';
+            localStorage.setItem('userRole', currentRole);
+
+            if (currentRole === 'admin') {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
         }
     </script>
 </body>
