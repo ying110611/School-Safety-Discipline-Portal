@@ -3,224 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Report | SMK Gajah Berang</title>
+    <title>Student Incident Dashboard | SMK Gajah Berang</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; }
-        .input-focus { transition: all 0.2s ease; }
-        .input-focus:focus { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        /* 毛玻璃卡片样式 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        /* 输入框聚焦效果 */
+        .input-focus {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(49, 46, 129, 0.1);
+        }
+        /* 悬停微动画 */
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -5px rgba(49, 46, 129, 0.15);
+        }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="bg-gradient-to-br from-slate-50 via-indigo-50/40 to-slate-100 min-h-screen flex flex-col text-slate-800">
 
-    <!-- Navigation Bar -->
-    <nav class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
-                <img src="logo.png" alt="SMK Gajah Berang Logo" class="h-10 w-auto object-contain bg-white rounded p-0.5" onerror="this.src='https://via.placeholder.com/40?text=Logo'">
+    <!-- Header / Navigation Bar -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-indigo-100/50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-3.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <img src="logo.png" alt="SMK Gajah Berang Logo" class="h-11 w-auto object-contain bg-white rounded-xl p-1 shadow-sm border border-slate-100 group-hover:scale-105 transition-transform" onerror="this.src='https://via.placeholder.com/45?text=SMKGB'">
                 <div>
-                    <span class="font-bold text-lg tracking-wide block leading-tight">SMK GAJAH BERANG</span>
-                    <span class="text-[10px] text-amber-300 font-medium tracking-wider uppercase">Safety & Discipline Portal</span>
+                    <span class="font-black text-xl tracking-tight text-indigo-950 block leading-tight">SMK GAJAH BERANG</span>
+                    <span class="text-[11px] text-indigo-600 font-bold tracking-wider uppercase">Student Safety Dashboard</span>
                 </div>
             </a>
             <div class="flex items-center space-x-4">
-                <span id="user-display" class="text-xs text-indigo-200 font-medium">Welcome, Student</span>
-                <a href="index.html" onclick="logout()" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded text-xs transition">Logout</a>
+                <span id="userGreeting" class="text-xs text-slate-600 font-bold hidden sm:inline">Student Portal</span>
+                <button onclick="logout()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-md shadow-rose-600/20 hover-lift">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 py-10 w-full">
-        <div class="grid lg:grid-cols-12 gap-8">
+    <!-- Main Workspace Grid -->
+    <main class="max-w-7xl mx-auto px-6 py-10 flex-grow w-full space-y-10">
+        
+        <!-- Welcome Banner -->
+        <div class="glass-card p-8 rounded-[2.5rem] shadow-xl shadow-indigo-900/5 border border-white flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+                <span class="inline-flex items-center space-x-2 bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-bold mb-3 border border-indigo-200/50">
+                    <i class="fa-solid fa-shield-cat"></i> Active Safety Session
+                </span>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Report an Incident Confidentially</h1>
+                <p class="text-slate-500 text-xs md:text-sm mt-1">Your report will be sent directly to the school discipline committee.</p>
+            </div>
+            <div class="bg-white/80 px-6 py-3.5 rounded-2xl border border-slate-200/60 text-center shadow-sm">
+                <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">My Total Reports</p>
+                <p id="userReportCount" class="text-3xl font-black text-indigo-900 mt-0.5">0</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- Left Column: New Incident Report Form (From design) -->
-            <div class="lg:col-span-7">
-                <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100">
-                    <div class="bg-indigo-900 p-8 text-white">
-                        <h1 class="text-2xl md:text-3xl font-bold">New Incident Report</h1>
-                        <p class="opacity-80 mt-2 text-sm">Please fill in the details accurately. Your report helps keep our school safe.</p>
-                    </div>
+            <!-- Left Panel: Incident Report Form (7 Cols) -->
+            <section class="lg:col-span-7">
+                <div class="glass-card p-8 md:p-10 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-white">
+                    <h2 class="text-xl font-extrabold text-slate-900 mb-6 flex items-center gap-2.5">
+                        <span class="w-9 h-9 bg-indigo-900 text-amber-300 rounded-xl flex items-center justify-center text-sm shadow-md shadow-indigo-900/20">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </span>
+                        Submit Incident Details
+                    </h2>
 
-                    <form id="bullyForm" onsubmit="submitReport(event)" class="p-8 space-y-6">
+                    <form id="reportForm" onsubmit="submitReport(event)" class="space-y-5">
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-2">Aggressor Name(s)</label>
-                                <input type="text" id="aggressorName" placeholder="Who was involved?" required 
-                                       class="input-focus w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-indigo-500 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-2">Incident Date</label>
-                                <input type="date" id="incidentDate" required 
-                                       class="input-focus w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-indigo-500 text-sm text-gray-600">
-                            </div>
-                        </div>
-
+                        <!-- Category Selection -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-2">Incident Category</label>
-                            <select id="category" required class="input-focus w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-indigo-500 text-sm text-gray-700">
-                                <option value="">Select Category</option>
-                                <option value="Bullying">Bullying (Physical / Verbal)</option>
-                                <option value="Vandalism">Vandalism</option>
+                            <label class="block text-xs font-bold text-slate-700 mb-2">Incident Category</label>
+                            <select id="incidentCategory" required class="input-focus w-full px-4 py-3.5 bg-slate-50/80 border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 outline-none focus:border-indigo-600 focus:bg-white">
+                                <option value="" disabled selected>Select category...</option>
+                                <option value="Bullying & Harassment">Bullying & Harassment</option>
                                 <option value="Cyberbullying">Cyberbullying</option>
-                                <option value="Other">Other Violation</option>
+                                <option value="Vandalism & Property Damage">Vandalism & Property Damage</option>
+                                <option value="Substance Abuse / Smoking">Substance Abuse / Smoking</option>
+                                <option value="Facility Safety Hazard">Facility Safety Hazard</option>
+                                <option value="Others">Others</option>
                             </select>
                         </div>
 
+                        <!-- Severity Rating -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-3">Severity Level</label>
+                            <label class="block text-xs font-bold text-slate-700 mb-2">Severity Level</label>
                             <div class="grid grid-cols-3 gap-3">
-                                <label class="relative cursor-pointer">
-                                    <input type="radio" name="severity" value="Mild" class="peer hidden" checked>
-                                    <div class="text-center py-2.5 border-2 border-gray-100 rounded-xl peer-checked:border-green-500 peer-checked:bg-green-50 transition font-semibold text-xs text-gray-500 peer-checked:text-green-600">
-                                        Mild
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="severity" value="Mild" checked class="peer sr-only">
+                                    <div class="p-3 text-center border border-slate-200 rounded-2xl bg-slate-50/80 peer-checked:bg-green-50 peer-checked:border-green-500 peer-checked:text-green-700 transition-all hover-lift">
+                                        <span class="block text-xs font-black">Level 1</span>
+                                        <span class="text-[10px] text-slate-500 font-semibold block mt-0.5">Mild Case</span>
                                     </div>
                                 </label>
-                                <label class="relative cursor-pointer">
-                                    <input type="radio" name="severity" value="Moderate" class="peer hidden">
-                                    <div class="text-center py-2.5 border-2 border-gray-100 rounded-xl peer-checked:border-amber-500 peer-checked:bg-amber-50 transition font-semibold text-xs text-gray-500 peer-checked:text-amber-600">
-                                        Moderate
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="severity" value="Moderate" class="peer sr-only">
+                                    <div class="p-3 text-center border border-slate-200 rounded-2xl bg-slate-50/80 peer-checked:bg-amber-50 peer-checked:border-amber-500 peer-checked:text-amber-700 transition-all hover-lift">
+                                        <span class="block text-xs font-black">Level 2</span>
+                                        <span class="text-[10px] text-slate-500 font-semibold block mt-0.5">Moderate</span>
                                     </div>
                                 </label>
-                                <label class="relative cursor-pointer">
-                                    <input type="radio" name="severity" value="Severe" class="peer hidden">
-                                    <div class="text-center py-2.5 border-2 border-gray-100 rounded-xl peer-checked:border-red-500 peer-checked:bg-red-50 transition font-semibold text-xs text-gray-500 peer-checked:text-red-600">
-                                        Severe
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="severity" value="Severe" class="peer sr-only">
+                                    <div class="p-3 text-center border border-slate-200 rounded-2xl bg-slate-50/80 peer-checked:bg-red-50 peer-checked:border-red-500 peer-checked:text-red-700 transition-all hover-lift">
+                                        <span class="block text-xs font-black">Level 3</span>
+                                        <span class="text-[10px] text-slate-500 font-semibold block mt-0.5">Severe</span>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
+                        <!-- Aggressor / Person Involved -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-2">Detailed Description</label>
-                            <textarea id="description" rows="4" placeholder="Tell us exactly what happened..." required 
-                                      class="input-focus w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:border-indigo-500 text-sm"></textarea>
+                            <label class="block text-xs font-bold text-slate-700 mb-2">Person(s) Involved (Optional)</label>
+                            <input type="text" id="aggressor" placeholder="e.g. Form 3 Student / Unknown" 
+                                   class="input-focus w-full px-4 py-3.5 bg-slate-50/80 border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 outline-none focus:border-indigo-600 focus:bg-white">
                         </div>
 
-                        <div class="pt-2">
-                            <button type="submit" class="w-full bg-indigo-900 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-200 hover:bg-indigo-800 transition-all active:scale-[0.98] text-sm">
-                                Submit Official Report
-                            </button>
-                            <p class="text-center text-xs text-gray-400 mt-3 italic">This report will be sent to the Discipline Board for review.</p>
+                        <!-- Incident Description -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-2">Detailed Description</label>
+                            <textarea id="description" rows="4" required placeholder="Describe what happened, location, time, and any relevant detail..." 
+                                      class="input-focus w-full px-4 py-3.5 bg-slate-50/80 border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 outline-none focus:border-indigo-600 focus:bg-white"></textarea>
                         </div>
+
+                        <button type="submit" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-900/20 hover-lift text-xs transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Incident Report
+                        </button>
                     </form>
                 </div>
-            </div>
+            </section>
 
-            <!-- Right Column: Report History Table -->
-            <div class="lg:col-span-5">
-                <div class="bg-white p-6 rounded-[2.5rem] shadow-xl shadow-slate-200/60 border border-slate-100 h-full">
-                    <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-indigo-600"></i> My Submitted Reports
-                    </h2>
+            <!-- Right Panel: My Submitted Reports List (5 Cols) -->
+            <section class="lg:col-span-5">
+                <div class="glass-card p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-white h-full flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-slate-900 mb-6 flex items-center gap-2.5">
+                            <span class="w-9 h-9 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-sm shadow-sm">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </span>
+                            My Submitted Reports
+                        </h2>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="border-b border-slate-200 text-[11px] text-slate-500 uppercase bg-slate-50">
-                                    <th class="p-2.5">ID</th>
-                                    <th class="p-2.5">Category</th>
-                                    <th class="p-2.5">Severity</th>
-                                    <th class="p-2.5">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="report-list" class="text-xs divide-y divide-slate-100">
-                                <!-- Dynamically generated rows -->
-                            </tbody>
-                        </table>
+                        <div class="space-y-3 overflow-y-auto max-h-[480px] pr-1" id="myReportList">
+                            <!-- Dynamic Content Rendered Here -->
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 text-center">
+                        <p class="text-[11px] text-slate-400 font-medium">All reports are strictly encrypted and reviewed by teachers.</p>
                     </div>
                 </div>
-            </div>
+            </section>
 
         </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-            <p class="font-semibold text-slate-300">SMK Gajah Berang - Discipline & Safety Board</p>
+        <div class="max-w-7xl mx-auto px-6 text-center space-y-2">
+            <p class="font-bold text-slate-300">SMK Gajah Berang &bull; Safety & Discipline Board</p>
             <p>&copy; 2026 All Rights Reserved.</p>
         </div>
     </footer>
 
     <!-- JavaScript Logic -->
     <script>
-        const currentUser = localStorage.getItem('currentUser') || 'Student';
-        document.getElementById('user-display').innerText = `Welcome, ${currentUser}`;
+        const user = localStorage.getItem('currentUser') || 'Student';
+        document.getElementById('userGreeting').innerText = `Logged in: ${user}`;
 
-        // 设置默认日期为今天
-        document.getElementById('incidentDate').valueAsDate = new Date();
+        function loadMyReports() {
+            const reports = JSON.parse(localStorage.getItem('userReports')) || [];
+            const listContainer = document.getElementById('myReportList');
+            document.getElementById('userReportCount').innerText = reports.length;
 
-        let reports = JSON.parse(localStorage.getItem('userReports')) || [
-            { id: 'REP-101', category: 'Bullying', aggressor: 'Unknown', severity: 'Moderate', date: '2026-08-01', status: 'Pending' },
-            { id: 'REP-102', category: 'Vandalism', aggressor: 'Form 4 Student', severity: 'Mild', date: '2026-08-02', status: 'Under Investigation' }
-        ];
-
-        function renderReports() {
-            const tbody = document.getElementById('report-list');
-            tbody.innerHTML = '';
+            listContainer.innerHTML = '';
 
             if (reports.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">No reports submitted yet.</td></tr>`;
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 px-4 bg-slate-50/60 rounded-3xl border border-dashed border-slate-200">
+                        <i class="fa-solid fa-inbox text-slate-300 text-3xl mb-3"></i>
+                        <p class="text-xs font-bold text-slate-500">No reports submitted yet</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Use the form on the left to submit a safety report.</p>
+                    </div>
+                `;
                 return;
             }
 
             reports.forEach(rep => {
-                let badgeClass = 'bg-amber-100 text-amber-800';
-                if (rep.status === 'Resolved') badgeClass = 'bg-emerald-100 text-emerald-800';
-                if (rep.status === 'Under Investigation') badgeClass = 'bg-blue-100 text-blue-800';
+                let statusBadge = 'bg-amber-100 text-amber-800 border-amber-200';
+                if (rep.status === 'Resolved') statusBadge = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                if (rep.status === 'Under Investigation') statusBadge = 'bg-blue-100 text-blue-800 border-blue-200';
 
-                let sevClass = 'text-green-600 bg-green-50';
-                if (rep.severity === 'Moderate') sevClass = 'text-amber-600 bg-amber-50';
-                if (rep.severity === 'Severe') sevClass = 'text-red-600 bg-red-50';
+                let sevBadge = 'text-green-600 bg-green-50';
+                if (rep.severity === 'Moderate') sevBadge = 'text-amber-600 bg-amber-50';
+                if (rep.severity === 'Severe') sevBadge = 'text-red-600 bg-red-50';
 
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-                tr.innerHTML = `
-                    <td class="p-2.5 font-semibold text-slate-700">${rep.id}</td>
-                    <td class="p-2.5">${rep.category}</td>
-                    <td class="p-2.5"><span class="px-2 py-0.5 rounded-md font-semibold text-[10px] ${sevClass}">${rep.severity}</span></td>
-                    <td class="p-2.5"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeClass}">${rep.status}</span></td>
+                const card = document.createElement('div');
+                card.className = "p-5 bg-white/90 rounded-2xl border border-slate-100 shadow-sm hover-lift space-y-2";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-2">
+                        <span class="font-extrabold text-xs text-indigo-950">${rep.id} &bull; ${rep.category}</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border ${statusBadge}">${rep.status}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 line-clamp-2">${rep.description}</p>
+                    <div class="flex justify-between items-center text-[10px] text-slate-400 pt-2 border-t border-slate-100">
+                        <span class="font-bold px-2 py-0.5 rounded-md ${sevBadge}">${rep.severity} Severity</span>
+                        <span>${rep.date}</span>
+                    </div>
                 `;
-                tbody.appendChild(tr);
+                listContainer.appendChild(card);
             });
         }
 
         function submitReport(e) {
             e.preventDefault();
-            const aggressor = document.getElementById('aggressorName').value;
-            const incidentDate = document.getElementById('incidentDate').value;
-            const category = document.getElementById('category').value;
+
+            const category = document.getElementById('incidentCategory').value;
             const severity = document.querySelector('input[name="severity"]:checked').value;
+            const aggressor = document.getElementById('aggressor').value || 'N/A';
             const description = document.getElementById('description').value;
 
-            const newId = 'REP-' + Math.floor(100 + Math.random() * 900);
-
-            reports.unshift({
-                id: newId,
-                category: category,
-                aggressor: aggressor,
-                severity: severity,
-                description: description,
-                date: incidentDate,
+            const existingReports = JSON.parse(localStorage.getItem('userReports')) || [];
+            
+            const newReport = {
+                id: `REP-${Math.floor(100 + Math.random() * 900)}`,
+                category,
+                severity,
+                aggressor,
+                description,
+                date: new Date().toISOString().split('T')[0],
                 status: 'Pending'
-            });
+            };
 
-            localStorage.setItem('userReports', JSON.stringify(reports));
-            renderReports();
-            document.getElementById('bullyForm').reset();
-            document.getElementById('incidentDate').valueAsDate = new Date();
-            alert('Report submitted successfully!');
+            existingReports.unshift(newReport);
+            localStorage.setItem('userReports', JSON.stringify(existingReports));
+
+            alert('Incident report submitted successfully!');
+            document.getElementById('reportForm').reset();
+            loadMyReports();
         }
 
         function logout() {
             localStorage.removeItem('currentUser');
+            localStorage.removeItem('userRole');
+            window.location.href = 'login.html';
         }
 
-        renderReports();
+        loadMyReports();
     </script>
 </body>
 </html>
