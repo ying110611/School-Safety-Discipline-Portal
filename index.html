@@ -202,13 +202,22 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- 纯前端 JavaScript 逻辑 (使用 LocalStorage) -->
     <script>
-        let currentUser = "Ramziy";
-        let reportsData = [
+        // 初始用户
+        let currentUser = localStorage.getItem('currentUser') || "Student";
+
+        // 从 LocalStorage 读取历史记录，若为空则初始化预设数据
+        let reportsData = JSON.parse(localStorage.getItem('reportsData')) || [
             { id: 1, user: "Ramziy", date: "2026-08-01", category: "Vandalism / Graffiti", location: "Male Toilet", desc: "Carved graffiti on wall", status: "In Progress" },
             { id: 2, user: "Tan Si Ying", date: "2026-08-03", category: "Bullying", location: "Canteen", desc: "Verbal teasing during recess", status: "Resolved" }
         ];
+
+        // 将数据同步保存至 LocalStorage
+        function saveData() {
+            localStorage.setItem('reportsData', JSON.stringify(reportsData));
+            localStorage.setItem('currentUser', currentUser);
+        }
 
         function switchPage(pageId) {
             document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
@@ -221,17 +230,20 @@
             e.preventDefault();
             let email = document.getElementById('login-email').value;
             currentUser = email.split('@')[0] || "User";
+            saveData();
             switchPage('user-dashboard');
         }
 
         function handleSignup(e) {
             e.preventDefault();
             currentUser = document.getElementById('signup-name').value || "User";
+            saveData();
             switchPage('user-dashboard');
         }
 
         function logout() {
             currentUser = "Student";
+            saveData();
             switchPage('home');
         }
 
@@ -247,6 +259,7 @@
                 status: "Pending"
             };
             reportsData.unshift(newReport);
+            saveData();
             alert('Report submitted successfully!');
             e.target.reset();
             renderTables();
@@ -256,19 +269,21 @@
             const item = reportsData.find(r => r.id === id);
             if(item) {
                 item.status = newStatus;
+                saveData();
                 renderTables();
             }
         }
 
         function deleteReport(id) {
             reportsData = reportsData.filter(r => r.id !== id);
+            saveData();
             renderTables();
         }
 
         function renderTables() {
             document.getElementById('user-display-name').innerText = currentUser;
 
-            // Render User Table
+            // 渲染用户界面表格
             const userTable = document.getElementById('user-reports-list');
             const myReports = reportsData.filter(r => r.user === currentUser);
             userTable.innerHTML = myReports.length ? myReports.map(r => `
@@ -280,11 +295,11 @@
                 </tr>
             `).join('') : `<tr><td colspan="4" class="p-4 text-center text-slate-400">No reports submitted yet.</td></tr>`;
 
-            // Stats
+            // 更新统计数据
             document.getElementById('stat-total').innerText = myReports.length;
             document.getElementById('stat-resolved').innerText = myReports.filter(r => r.status === 'Resolved').length;
 
-            // Render Admin Table
+            // 渲染管理员界面表格
             const adminTable = document.getElementById('admin-reports-table');
             document.getElementById('admin-case-count').innerText = `${reportsData.length} records`;
             adminTable.innerHTML = reportsData.length ? reportsData.map(r => `
@@ -294,9 +309,9 @@
                     <td class="p-3 text-slate-600"><strong class="text-slate-800">${r.location}:</strong> ${r.desc}</td>
                     <td class="p-3">${getStatusBadge(r.status)}</td>
                     <td class="p-3 text-center space-x-1">
-                        <button onclick="updateStatus(${r.id}, 'In Progress')" class="bg-amber-50 text-amber-600 hover:bg-amber-100 px-2 py-1 rounded text-xs">Process</button>
-                        <button onclick="updateStatus(${r.id}, 'Resolved')" class="bg-emerald-50 text-emerald-600 hover:bg-emerald-100 px-2 py-1 rounded text-xs">Resolve</button>
-                        <button onclick="deleteReport(${r.id})" class="bg-rose-50 text-rose-600 hover:bg-rose-100 px-2 py-1 rounded text-xs">Delete</button>
+                        <button onclick="updateStatus(${r.id}, 'In Progress')" class="bg-amber-50 text-amber-600 hover:bg-amber-100 px-2 py-1 rounded text-xs font-semibold">Process</button>
+                        <button onclick="updateStatus(${r.id}, 'Resolved')" class="bg-emerald-50 text-emerald-600 hover:bg-emerald-100 px-2 py-1 rounded text-xs font-semibold">Resolve</button>
+                        <button onclick="deleteReport(${r.id})" class="bg-rose-50 text-rose-600 hover:bg-rose-100 px-2 py-1 rounded text-xs font-semibold">Delete</button>
                     </td>
                 </tr>
             `).join('') : `<tr><td colspan="5" class="p-4 text-center text-slate-400">No records found.</td></tr>`;
@@ -308,7 +323,7 @@
             return `<span class="bg-rose-100 text-rose-800 text-xs px-2.5 py-1 rounded-full font-semibold">Pending</span>`;
         }
 
-        // Initialize
+        // 初始化加载数据
         renderTables();
     </script>
 </body>
