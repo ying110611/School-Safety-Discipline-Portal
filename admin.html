@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMK Gajah Berang - Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="logo.png" alt="SMK Gajah Berang Logo" class="h-10 w-auto object-contain bg-white rounded p-0.5" onerror="this.src='https://via.placeholder.com/40?text=Logo'">
+                <div>
+                    <span class="font-bold text-lg tracking-wide block leading-tight">SMK GAJAH BERANG</span>
+                    <span class="text-[10px] text-amber-400 font-medium tracking-wider uppercase">Discipline Board Portal (Admin)</span>
+                </div>
+            </a>
+            <div class="flex items-center space-x-4">
+                <span class="text-xs text-slate-300 font-medium">Discipline Teacher</span>
+                <a href="index.html" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded text-xs transition">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content: Admin Dashboard -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full space-y-6">
+        
+        <!-- Stats Bar -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Total Reports</p>
+                    <p id="stat-total" class="text-2xl font-bold text-slate-800 mt-1">0</p>
+                </div>
+                <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Pending Review</p>
+                    <p id="stat-pending" class="text-2xl font-bold text-amber-600 mt-1">0</p>
+                </div>
+                <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Resolved Cases</p>
+                    <p id="stat-resolved" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
+                </div>
+                <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Table -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-slate-700"></i> Manage Incident Reports
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-xs text-slate-500 uppercase bg-slate-50">
+                            <th class="p-3">Report ID</th>
+                            <th class="p-3">Category</th>
+                            <th class="p-3">Location</th>
+                            <th class="p-3">Date</th>
+                            <th class="p-3">Current Status</th>
+                            <th class="p-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-report-list" class="text-xs divide-y divide-slate-100">
+                        <!-- Dynamically generated rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="font-semibold text-slate-300">SMK Gajah Berang - Discipline & Safety Board</p>
+            <p>&copy; 2026 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let reports = JSON.parse(localStorage.getItem('userReports')) || [
+            { id: 'REP-101', category: 'Bullying', location: 'Canteen Area', date: '2026-08-01', status: 'Pending' },
+            { id: 'REP-102', category: 'Vandalism', location: 'Toilet Block A', date: '2026-08-02', status: 'Under Investigation' }
+        ];
+
+        function updateStats() {
+            document.getElementById('stat-total').innerText = reports.length;
+            document.getElementById('stat-pending').innerText = reports.filter(r => r.status === 'Pending').length;
+            document.getElementById('stat-resolved').innerText = reports.filter(r => r.status === 'Resolved').length;
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('admin-report-list');
+            tbody.innerHTML = '';
+
+            if (reports.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No reports found.</td></tr>`;
+                return;
+            }
+
+            reports.forEach((rep, index) => {
+                let badgeClass = 'bg-amber-100 text-amber-800';
+                if (rep.status === 'Resolved') badgeClass = 'bg-emerald-100 text-emerald-800';
+                if (rep.status === 'Under Investigation') badgeClass = 'bg-blue-100 text-blue-800';
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50";
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-800">${rep.id}</td>
+                    <td class="p-3">${rep.category}</td>
+                    <td class="p-3">${rep.location}</td>
+                    <td class="p-3 text-slate-400">${rep.date}</td>
+                    <td class="p-3"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${badgeClass}">${rep.status}</span></td>
+                    <td class="p-3 text-right space-x-1">
+                        <button onclick="changeStatus(${index}, 'Under Investigation')" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-[10px]">Investigate</button>
+                        <button onclick="changeStatus(${index}, 'Resolved')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[10px]">Resolve</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updateStats();
+        }
+
+        function changeStatus(index, newStatus) {
+            reports[index].status = newStatus;
+            localStorage.setItem('userReports', JSON.stringify(reports));
+            renderAdminTable();
+        }
+
+        renderAdminTable();
+    </script>
+</body>
+</html>
