@@ -13,8 +13,7 @@
     <nav class="bg-indigo-900 text-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('home')">
-                <!-- School Logo -->
-                <img src="logo.png" alt="SMK Gajah Berang Logo" class="h-10 w-auto object-contain bg-white rounded p-0.5">
+                <img src="logo.png" alt="SMK Gajah Berang Logo" class="h-10 w-auto object-contain bg-white rounded p-0.5" onerror="this.src='https://via.placeholder.com/40?text=Logo'">
                 <span class="font-bold text-lg tracking-wide">SMK GAJAH BERANG</span>
             </div>
             <div id="nav-buttons" class="space-x-2">
@@ -30,7 +29,7 @@
         <div class="bg-indigo-800 text-white py-12 px-4 text-center">
             <p class="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-2">Official School Safety Initiative</p>
             <h1 class="text-3xl font-extrabold mb-4">Building a Bully-Free School Environment</h1>
-            <p class="max-w-xl mx-auto text-indigo-200 text-sm mb-6">Together for a safer campus. Report bullying, vandalism, and discipline issues securely. Your voice matters in keeping our school safe.</p>
+            <p class="max-w-xl mx-auto text-indigo-200 text-sm mb-6">Together for a safer campus. Report bullying, vandalism, and discipline issues securely.</p>
             <button onclick="switchPage('user-dashboard')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-bold px-6 py-2.5 rounded-lg shadow-lg">Report Incident Now</button>
         </div>
 
@@ -45,12 +44,12 @@
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                     <div class="h-40 bg-amber-100 rounded-lg flex items-center justify-center text-amber-500 text-4xl mb-4"><i class="fa-solid fa-spray-can"></i></div>
                     <h3 class="font-bold mb-1">Stop Vandalism</h3>
-                    <p class="text-xs text-slate-500">Respect school property. Avoid graffiti and damaging public facilities to maintain a clean learning space.</p>
+                    <p class="text-xs text-slate-500">Respect school property. Avoid graffiti and damaging public facilities.</p>
                 </div>
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
                     <div class="h-40 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-500 text-4xl mb-4"><i class="fa-solid fa-user-shield"></i></div>
                     <h3 class="font-bold mb-1">Strict Confidentiality</h3>
-                    <p class="text-xs text-slate-500">All submitted reports are securely encrypted to protect your identity and privacy at all times.</p>
+                    <p class="text-xs text-slate-500">All submitted reports are securely processed to protect your identity at all times.</p>
                 </div>
             </div>
         </div>
@@ -60,10 +59,10 @@
     <div id="page-login" class="page-content hidden py-12">
         <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md border border-slate-200">
             <h2 class="text-2xl font-bold text-center mb-6">Account Login</h2>
-            <form onsubmit="handleAuth(event, 'user-dashboard')">
+            <form onsubmit="handleLogin(event)">
                 <div class="mb-4">
                     <label class="block text-xs font-semibold mb-1">Email Address</label>
-                    <input type="email" placeholder="student@gajahberang.edu.my" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+                    <input type="email" id="login-email" placeholder="student@gajahberang.edu.my" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
                 </div>
                 <div class="mb-6">
                     <label class="block text-xs font-semibold mb-1">Password</label>
@@ -79,10 +78,10 @@
     <div id="page-signup" class="page-content hidden py-12">
         <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md border border-slate-200">
             <h2 class="text-2xl font-bold text-center mb-6">Create an Account</h2>
-            <form onsubmit="handleAuth(event, 'user-dashboard')">
+            <form onsubmit="handleSignup(event)">
                 <div class="mb-4">
                     <label class="block text-xs font-semibold mb-1">Full Name</label>
-                    <input type="text" placeholder="e.g. Tan Ah Kow" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+                    <input type="text" id="signup-name" placeholder="e.g. Tan Ah Kow" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
                 </div>
                 <div class="mb-4">
                     <label class="block text-xs font-semibold mb-1">Email Address</label>
@@ -101,19 +100,22 @@
     <!-- 3. User Dashboard -->
     <div id="page-user-dashboard" class="page-content hidden max-w-6xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold">User Dashboard</h1>
-            <button onclick="switchPage('admin-dashboard')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1.5 rounded">Switch to Admin View (Demo)</button>
+            <h1 class="text-2xl font-bold">Welcome, <span id="user-display-name">Student</span>!</h1>
+            <div class="space-x-2">
+                <button onclick="switchPage('admin-dashboard')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1.5 rounded">Switch to Admin View (Demo)</button>
+                <button onclick="logout()" class="text-xs bg-rose-100 text-rose-700 hover:bg-rose-200 px-3 py-1.5 rounded font-semibold">Logout</button>
+            </div>
         </div>
 
         <div class="grid md:grid-cols-3 gap-6 mb-8">
-            <!-- Report Case Form -->
+            <!-- Form -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 md:col-span-2">
                 <h3 class="text-lg font-bold mb-4 flex items-center text-indigo-900"><i class="fa-solid fa-pen-to-square mr-2"></i>Report Incident</h3>
                 <form onsubmit="submitReport(event)">
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="block text-xs font-semibold mb-1">Category</label>
-                            <select class="w-full px-3 py-2 border rounded-lg text-sm bg-slate-50">
+                            <select id="report-category" class="w-full px-3 py-2 border rounded-lg text-sm bg-slate-50">
                                 <option>Bullying</option>
                                 <option>Vandalism / Graffiti</option>
                                 <option>Contraband / Smoking</option>
@@ -122,34 +124,34 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold mb-1">Location</label>
-                            <input type="text" placeholder="e.g. Behind Classroom 3 Cekal" required class="w-full px-3 py-2 border rounded-lg text-sm">
+                            <input type="text" id="report-location" placeholder="e.g. Behind Classroom 3 Cekal" required class="w-full px-3 py-2 border rounded-lg text-sm">
                         </div>
                     </div>
                     <div class="mb-4">
                         <label class="block text-xs font-semibold mb-1">Description</label>
-                        <textarea rows="3" placeholder="Describe the incident, involved individuals, time, etc..." class="w-full px-3 py-2 border rounded-lg text-sm"></textarea>
+                        <textarea id="report-desc" rows="3" placeholder="Describe the incident, involved individuals, time, etc..." required class="w-full px-3 py-2 border rounded-lg text-sm"></textarea>
                     </div>
                     <button type="submit" class="bg-indigo-900 text-white text-sm px-5 py-2 rounded-lg font-semibold hover:bg-indigo-800">Submit Report</button>
                 </form>
             </div>
 
-            <!-- Safety Stats -->
+            <!-- Stats -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-lg font-bold mb-4 flex items-center text-indigo-900"><i class="fa-solid fa-chart-pie mr-2"></i>Safety Stats</h3>
                 <div class="space-y-4">
                     <div class="bg-slate-50 p-3 rounded-lg flex justify-between items-center">
-                        <span class="text-xs font-semibold text-slate-600">Cases Processed This Month</span>
-                        <span class="text-lg font-bold text-emerald-600">12</span>
+                        <span class="text-xs font-semibold text-slate-600">Total Reports Submitted</span>
+                        <span id="stat-total" class="text-lg font-bold text-indigo-600">0</span>
                     </div>
                     <div class="bg-slate-50 p-3 rounded-lg flex justify-between items-center">
-                        <span class="text-xs font-semibold text-slate-600">Resolution Rate</span>
-                        <span class="text-lg font-bold text-indigo-600">100%</span>
+                        <span class="text-xs font-semibold text-slate-600">Resolved Cases</span>
+                        <span id="stat-resolved" class="text-lg font-bold text-emerald-600">0</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- My Submissions -->
+        <!-- Submissions Table -->
         <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
             <h3 class="text-lg font-bold mb-4">My Submissions</h3>
             <div class="overflow-x-auto">
@@ -162,14 +164,7 @@
                             <th class="p-3">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="user-reports-list">
-                        <tr class="border-b">
-                            <td class="p-3">2026-08-01</td>
-                            <td class="p-3">Vandalism</td>
-                            <td class="p-3">Outside Male Toilet</td>
-                            <td class="p-3"><span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-full font-semibold">In Progress</span></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="user-reports-list"></tbody>
                 </table>
             </div>
         </div>
@@ -178,14 +173,17 @@
     <!-- 4. Admin Dashboard -->
     <div id="page-admin-dashboard" class="page-content hidden max-w-6xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-slate-800">School Admin Dashboard</h1>
-            <span class="bg-rose-100 text-rose-800 text-xs px-3 py-1 rounded-full font-bold">Discipline Board Access</span>
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">School Admin Dashboard</h1>
+                <p class="text-xs text-slate-500">Discipline Board Portal</p>
+            </div>
+            <button onclick="switchPage('user-dashboard')" class="text-xs bg-indigo-100 text-indigo-800 hover:bg-indigo-200 px-3 py-1.5 rounded font-semibold">Back to User View</button>
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
-                <h3 class="font-bold text-slate-700">Incident Management</h3>
-                <span class="text-xs text-slate-500">1 active record</span>
+                <h3 class="font-bold text-slate-700">All Reported Incidents</h3>
+                <span id="admin-case-count" class="text-xs text-slate-500">0 records</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
@@ -193,46 +191,125 @@
                         <tr>
                             <th class="p-3">Reported By</th>
                             <th class="p-3">Category</th>
-                            <th class="p-3">Description</th>
+                            <th class="p-3">Location & Description</th>
                             <th class="p-3">Status</th>
                             <th class="p-3 text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="admin-reports-table">
-                        <tr class="border-b">
-                            <td class="p-3 font-semibold">Ramziy</td>
-                            <td class="p-3"><span class="bg-red-50 text-red-600 px-2 py-0.5 rounded text-xs">Vandalism</span></td>
-                            <td class="p-3 text-slate-500 max-w-xs truncate">Carved graffiti on canteen tables</td>
-                            <td class="p-3"><span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-semibold">Resolved</span></td>
-                            <td class="p-3 text-center space-x-2">
-                                <button class="bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1 rounded text-xs font-semibold">View Details</button>
-                                <button onclick="this.closest('tr').remove()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 px-3 py-1 rounded text-xs font-semibold">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody id="admin-reports-table"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- JavaScript Logic -->
     <script>
+        let currentUser = "Ramziy";
+        let reportsData = [
+            { id: 1, user: "Ramziy", date: "2026-08-01", category: "Vandalism / Graffiti", location: "Male Toilet", desc: "Carved graffiti on wall", status: "In Progress" },
+            { id: 2, user: "Tan Si Ying", date: "2026-08-03", category: "Bullying", location: "Canteen", desc: "Verbal teasing during recess", status: "Resolved" }
+        ];
+
         function switchPage(pageId) {
             document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('page-' + pageId).classList.remove('hidden');
             window.scrollTo(0, 0);
+            renderTables();
         }
 
-        function handleAuth(e, nextPage) {
+        function handleLogin(e) {
             e.preventDefault();
-            switchPage(nextPage);
+            let email = document.getElementById('login-email').value;
+            currentUser = email.split('@')[0] || "User";
+            switchPage('user-dashboard');
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            currentUser = document.getElementById('signup-name').value || "User";
+            switchPage('user-dashboard');
+        }
+
+        function logout() {
+            currentUser = "Student";
+            switchPage('home');
         }
 
         function submitReport(e) {
             e.preventDefault();
-            alert('Report submitted securely. The discipline board will review it shortly.');
+            const newReport = {
+                id: Date.now(),
+                user: currentUser,
+                date: new Date().toISOString().split('T')[0],
+                category: document.getElementById('report-category').value,
+                location: document.getElementById('report-location').value,
+                desc: document.getElementById('report-desc').value,
+                status: "Pending"
+            };
+            reportsData.unshift(newReport);
+            alert('Report submitted successfully!');
             e.target.reset();
+            renderTables();
         }
+
+        function updateStatus(id, newStatus) {
+            const item = reportsData.find(r => r.id === id);
+            if(item) {
+                item.status = newStatus;
+                renderTables();
+            }
+        }
+
+        function deleteReport(id) {
+            reportsData = reportsData.filter(r => r.id !== id);
+            renderTables();
+        }
+
+        function renderTables() {
+            document.getElementById('user-display-name').innerText = currentUser;
+
+            // Render User Table
+            const userTable = document.getElementById('user-reports-list');
+            const myReports = reportsData.filter(r => r.user === currentUser);
+            userTable.innerHTML = myReports.length ? myReports.map(r => `
+                <tr class="border-b">
+                    <td class="p-3">${r.date}</td>
+                    <td class="p-3 font-medium">${r.category}</td>
+                    <td class="p-3">${r.location}</td>
+                    <td class="p-3">${getStatusBadge(r.status)}</td>
+                </tr>
+            `).join('') : `<tr><td colspan="4" class="p-4 text-center text-slate-400">No reports submitted yet.</td></tr>`;
+
+            // Stats
+            document.getElementById('stat-total').innerText = myReports.length;
+            document.getElementById('stat-resolved').innerText = myReports.filter(r => r.status === 'Resolved').length;
+
+            // Render Admin Table
+            const adminTable = document.getElementById('admin-reports-table');
+            document.getElementById('admin-case-count').innerText = `${reportsData.length} records`;
+            adminTable.innerHTML = reportsData.length ? reportsData.map(r => `
+                <tr class="border-b">
+                    <td class="p-3 font-semibold">${r.user}</td>
+                    <td class="p-3"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs">${r.category}</span></td>
+                    <td class="p-3 text-slate-600"><strong class="text-slate-800">${r.location}:</strong> ${r.desc}</td>
+                    <td class="p-3">${getStatusBadge(r.status)}</td>
+                    <td class="p-3 text-center space-x-1">
+                        <button onclick="updateStatus(${r.id}, 'In Progress')" class="bg-amber-50 text-amber-600 hover:bg-amber-100 px-2 py-1 rounded text-xs">Process</button>
+                        <button onclick="updateStatus(${r.id}, 'Resolved')" class="bg-emerald-50 text-emerald-600 hover:bg-emerald-100 px-2 py-1 rounded text-xs">Resolve</button>
+                        <button onclick="deleteReport(${r.id})" class="bg-rose-50 text-rose-600 hover:bg-rose-100 px-2 py-1 rounded text-xs">Delete</button>
+                    </td>
+                </tr>
+            `).join('') : `<tr><td colspan="5" class="p-4 text-center text-slate-400">No records found.</td></tr>`;
+        }
+
+        function getStatusBadge(status) {
+            if(status === 'Resolved') return `<span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-semibold">Resolved</span>`;
+            if(status === 'In Progress') return `<span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-full font-semibold">In Progress</span>`;
+            return `<span class="bg-rose-100 text-rose-800 text-xs px-2.5 py-1 rounded-full font-semibold">Pending</span>`;
+        }
+
+        // Initialize
+        renderTables();
     </script>
 </body>
 </html>
